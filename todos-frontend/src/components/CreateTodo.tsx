@@ -51,6 +51,10 @@ const CreateTodo: React.FC = () => {
   );
 
   const handleAddTodo = async () => {
+    setTodoName("");
+    setTodoNameHtml("");
+    setDescription("");
+    setDueDate(null);
     setAddingTodo(true);
     
     const toastId = toast.loading("Adding todo...");
@@ -77,8 +81,7 @@ const CreateTodo: React.FC = () => {
     }
 
     setAddingTodo(false);
-    setTodoName("");
-    setTodoNameHtml("");
+
   };
 
   useEffect(() => {
@@ -124,7 +127,8 @@ const CreateTodo: React.FC = () => {
         {!todoName && (
           <Text
             size="4"
-            style={{ opacity: 0.55, position: "absolute", zIndex: -10 }}
+            style={{ opacity: 0.55, position: "absolute", zIndex: -10, }}
+            className="select-none"
           >
             Todo name
           </Text>
@@ -147,11 +151,12 @@ const CreateTodo: React.FC = () => {
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               e.preventDefault();
-              contentEditableRef.current?.blur();
+              e.currentTarget.innerHTML = ""
               handleAddTodo();
             }
           }}
           asChild
+          className="select-none"
         >
           <p></p>
         </Text>
@@ -164,6 +169,7 @@ const CreateTodo: React.FC = () => {
             outline: "none",
             top: 0,
           }}
+          
           size="4"
           dangerouslySetInnerHTML={{ __html: todoNameHtml }}
           asChild
