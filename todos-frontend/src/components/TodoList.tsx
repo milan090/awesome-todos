@@ -36,14 +36,14 @@ const TodoList: React.FC = () => {
           All
         </ToggleGroup.Item>
         <ToggleGroup.Item
-          className={"px-3 py-1 rounded-md data-[state=on]:bg-orange-300 border"}
+          className={"px-3 py-1 rounded-md data-[state=on]:bg-orange-400 border"}
           value="TODO"
           aria-label="Todo"
         >
           Todo
         </ToggleGroup.Item>
         <ToggleGroup.Item
-          className={"px-3 py-1 rounded-md data-[state=on]:bg-green-500/50 border"}
+          className={"px-3 py-1 rounded-md data-[state=on]:bg-yellow-500/50 border"}
           value="IN_PROGRESS"
           aria-label="In Progress"
         >
@@ -51,7 +51,7 @@ const TodoList: React.FC = () => {
         </ToggleGroup.Item>
 
         <ToggleGroup.Item
-          className={"px-3 py-1 rounded-md data-[state=on]:bg-red-600/50 border"}
+          className={"px-3 py-1 rounded-md data-[state=on]:bg-green-600/50 border"}
           value="DONE"
           aria-label="Done"
         >

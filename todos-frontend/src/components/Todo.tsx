@@ -47,87 +47,99 @@ const Todo: React.FC<TodoProps> = ({ todo }) => {
 
   return (
     <>
-     <Dialog.Root open={showFullTodo} onOpenChange={(v) => setShowFullTodo(v)}>
+      <Dialog.Root open={showFullTodo} onOpenChange={(v) => setShowFullTodo(v)}>
         <Dialog.Content className="max-w-[450px]">
-          <Dialog.Title>
-            {todo.title}
-          </Dialog.Title>
+          <Dialog.Title>{todo.title}</Dialog.Title>
           <Dialog.Description>
             {todo.description || "No description"}
           </Dialog.Description>
           <Dialog.Close>
-            <Cross2Icon width="20" height="20" className="cursor-pointer absolute top-6 right-6" />
+            <Cross2Icon
+              width="20"
+              height="20"
+              className="cursor-pointer absolute top-6 right-6"
+            />
           </Dialog.Close>
         </Dialog.Content>
       </Dialog.Root>
-    <Box className="todo"
-      onClick={() => setShowFullTodo(true)}
-    >
-      <Flex justify="between" pb={todo.dueDate ? "0" : "0.5rem"}>
-        <Flex gapX="0.5rem">
-          <DragHandleDots2Icon className="hidden md:block todo-drag-handler" />
-          <span style={{ marginTop: "0.3rem" }} onClick={handleToggleStatus}>
-            {todo.status === "DONE" ? (
-              <CheckCircledIcon
-                width={20}
-                height={20}
-                style={{ color: "#0070f3" }}
-              />
-            ) : (
-              <CircleIcon width={20} height={20} style={{ color: "#0070f3" }} />
-            )}
-          </span>
-          <Flex gapX="0.75rem">
-          <Text size="3" weight="medium">
-            {todo.title}
-          </Text>
-          {/* status */}
+      <Box className="todo">
+        <Flex justify="between" pb={todo.dueDate ? "0" : "0.5rem"}>
+          <Flex gapX="0.5rem">
+            <DragHandleDots2Icon className="hidden md:block todo-drag-handler" />
+            <span style={{ marginTop: "0.3rem" }} onClick={handleToggleStatus}>
+              {todo.status === "DONE" ? (
+                <CheckCircledIcon
+                  width={20}
+                  height={20}
+                  style={{ color: "#0070f3" }}
+                />
+              ) : (
+                <CircleIcon
+                  width={20}
+                  height={20}
+                  style={{ color: "#0070f3" }}
+                />
+              )}
+            </span>
+            <Flex gapX="0.75rem">
+              <Text size="3" weight="medium">
+                {todo.title}
+              </Text>
+              {/* status */}
+              <Text
+                size="2"
+                style={{
+                  display: "flex",
+                  columnGap: "0.25rem",
+                  alignItems: "center",
+                  fontSize: "0.75rem",
+                }}
+              >
+                {todo.status === "TODO" ? (
+                  <span className="bg-orange-400 rounded-lg px-2 text-black">
+                    Todo
+                  </span>
+                ) : todo.status === "IN_PROGRESS" ? (
+                  <span className="bg-yellow-500/60 text-black px-2 rounded-lg">
+                    In Progress
+                  </span>
+                ) : (
+                  <span className="bg-green-400 px-2 text-black rounded-lg">
+                    Done
+                  </span>
+                )}
+              </Text>
+            </Flex>
+          </Flex>
+          <Flex gapX="1rem">
+            <Button variant="ghost" onClick={() => setShowFullTodo(true)}>
+              See More
+            </Button>
+            <Button
+              variant="ghost"
+              className="text-red-400"
+              onClick={handleDeleteTodo}
+            >
+              Delete
+            </Button>
+            <EditTodo todo={todo} />
+          </Flex>
+        </Flex>
+        {todo.dueDate && (
           <Text
             size="2"
             style={{
               display: "flex",
               columnGap: "0.25rem",
               alignItems: "center",
-              fontSize: "0.75rem",
             }}
+            ml="1.75rem"
           >
-            {todo.status === "TODO" ? (
-              <span className="bg-orange-400 rounded-lg px-2 text-black">Todo</span>
-            ) : todo.status === "IN_PROGRESS" ? (
-              <span className="bg-yellow-500/60 text-black px-2 rounded-lg">In Progress</span>
-            ) : (
-              <span className="bg-green-400 px-2 text-black rounded-lg">Done</span>
-            )}
+            <CalendarIcon width={14} />
+            Due: {formatDistanceToNow(todo.dueDate, { addSuffix: true })}
           </Text>
-          </Flex>
-        </Flex>
-        <Flex gapX="1rem">
-          <Button
-            variant="ghost"
-            className="text-red-400"
-            onClick={handleDeleteTodo}
-          >
-            Delete
-          </Button>
-          <EditTodo todo={todo} />
-        </Flex>
-      </Flex>
-      {todo.dueDate && (
-        <Text
-          size="2"
-          style={{
-            display: "flex",
-            columnGap: "0.25rem",
-            alignItems: "center",
-          }}
-          ml="1.75rem"
-        >
-          <CalendarIcon width={14} />
-          Due: {formatDistanceToNow(todo.dueDate, { addSuffix: true })}
-        </Text>
-      )}
-     
-    </Box>
+        )}
+      </Box>
     </>
   );
 };
@@ -173,7 +185,11 @@ const EditTodo: React.FC<TodoProps> = ({ todo }) => {
       <Dialog.Content size="3" maxWidth="450px">
         <Dialog.Title>Edit Todo</Dialog.Title>
         <Dialog.Close>
-          <Cross2Icon width="20" height="20" className="cursor-pointer absolute top-6 right-6" />
+          <Cross2Icon
+            width="20"
+            height="20"
+            className="cursor-pointer absolute top-6 right-6"
+          />
         </Dialog.Close>
 
         <Container size="1">

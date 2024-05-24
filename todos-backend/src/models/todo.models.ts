@@ -42,6 +42,11 @@ const updateTodo = async (
 const updateManyTodos = async (
   todos: (Partial<Todo> & { id: string })[]
 ): Promise<Todo[]> => {
+  await prisma.todo.updateMany({
+    data: {
+      nextTodoId: null,
+    },
+  });
   return await prisma.$transaction(
     todos.map((todo) => {
       return prisma.todo.update({
