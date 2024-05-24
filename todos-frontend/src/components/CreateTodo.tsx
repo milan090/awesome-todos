@@ -55,7 +55,6 @@ const CreateTodo: React.FC = () => {
 
       const date = chrono.parseDate(text, refDate);
 
-      console.log(result);
       const tags = result.start.tags();
 
       // handling casual times unhandled by chrono

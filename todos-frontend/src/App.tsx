@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { TasksContext } from "./store/TaskContext";
 import Task from "./components/Task";
 import { Reorder } from "framer-motion";
+import AuthModal from "./components/AuthModal";
 
 function App() {
   const { tasks, setTasks } = useContext(TasksContext);
@@ -13,7 +14,7 @@ function App() {
   return (
     <main>
       <Navbar />
-
+      <AuthModal  />
       <Container size="2" mt="3rem">
         <CreateTodo />
 

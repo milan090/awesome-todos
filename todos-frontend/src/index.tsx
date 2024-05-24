@@ -6,6 +6,8 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Theme } from "@radix-ui/themes";
 import { TasksProvider } from "./store/TaskContext";
+import { AuthProvider } from "./store/AuthContext";
+import { Toaster } from "react-hot-toast";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -13,9 +15,12 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Theme>
-      <TasksProvider>
-        <App />
-      </TasksProvider>
+      <AuthProvider>
+        <TasksProvider>
+          <Toaster />
+          <App />
+        </TasksProvider>
+      </AuthProvider>
     </Theme>
   </React.StrictMode>
 );
