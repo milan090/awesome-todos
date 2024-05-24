@@ -8,7 +8,6 @@ beforeEach(async () => {
   await prisma.user.deleteMany({});
 });
 
-
 describe("Auth API", () => {
   it("should register a new user", async () => {
     const response = await request(app)
@@ -48,6 +47,31 @@ describe("Auth API", () => {
     expect(response.body.email).toBe("test@example.com");
   });
 
+  it("should get the logged-in user", async () => {
+    const email = "test@example.com";
+    const password = "password123";
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await prisma.user.create({
+      data: { email: "test@example.com", hashedPassword },
+    });
+
+    const loginResponse = await request(app)
+      .post("/api/auth/login")
+      .send({ email, password });
+
+    expect(loginResponse.status).toBe(200);
+
+    const cookie = loginResponse.headers["set-cookie"];
+
+    const response2 = await request(app)
+      .get("/api/auth/user")
+      .set("Cookie", cookie);
+
+    expect(response2.status).toBe(200);
+    expect(response2.body.email).toBe(email);
+  });
+
   it("should not login with wrong credentials", async () => {
     const response = await request(app)
       .post("/api/auth/login")
@@ -73,10 +97,8 @@ describe("Auth API", () => {
 
     expect(loginResponse.status).toBe(200);
 
-    // Get the cookie from the login response
     const cookie = loginResponse.headers["set-cookie"];
 
-    // Now logout the user
     const logoutResponse = await request(app)
       .post("/api/auth/logout")
       .set("Cookie", cookie);

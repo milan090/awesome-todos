@@ -1,8 +1,18 @@
 import { Request, Response } from "express";
-import { createUser, getUserByEmail } from "../models/user.model";
+import { createUser, getUserByEmail, getUserById } from "../models/user.model";
 import bcrypt from "bcryptjs";
 
 const SALT_ROUNDS = 10;
+
+export const getUser = async (req: Request, res: Response) => {
+  const userId = req.session.userId;
+
+  const user = await getUserById(userId!);
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  return res.status(200).json({ id: user.id, email: user.email });
+}
 
 export const register = async (req: Request, res: Response) => {
   const { email, password } = req.body;
