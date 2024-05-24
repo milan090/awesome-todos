@@ -6,9 +6,6 @@ import AuthModal from "./components/AuthModal";
 import TodoList from "./components/TodoList";
 
 function App() {
-
-  
-
   return (
     <main>
       <Navbar />
@@ -16,7 +13,7 @@ function App() {
       <Container size="2" mt="3rem" px="1rem">
         <CreateTodo />
 
-      <TodoList />
+        <TodoList />
       </Container>
     </main>
   );
