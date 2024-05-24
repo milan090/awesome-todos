@@ -5,6 +5,7 @@ import {
   Flex,
   Popover,
   Select,
+  Spinner,
   Text,
 } from "@radix-ui/themes";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -14,14 +15,18 @@ import { formatDistanceToNow } from "date-fns";
 import { formatDate } from "../utils/date-format";
 import Datetime from "react-datetime";
 import DateTimePicker from "./DateTimePicker";
+import { useTodos } from "../store/TodoContext";
+import toast from "react-hot-toast";
 
 type TodoStatus = "TODO" | "IN_PROGRESS" | "DONE";
 
 const CreateTodo: React.FC = () => {
   const [status, setStatus] = useState<TodoStatus>("TODO");
+  const [addingTodo, setAddingTodo] = useState(false);
+  const { addTodo } = useTodos();
 
-  const [taskName, setTaskName] = useState("");
-  const [taskNameHtml, setTaskNameHtml] = useState("");
+  const [todoName, setTodoName] = useState("");
+  const [todoNameHtml, setTodoNameHtml] = useState("");
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState<Date | null>(null);
   const contentEditableRef = useRef<HTMLDivElement>(null);
@@ -29,8 +34,8 @@ const CreateTodo: React.FC = () => {
   const handleInput = () => {
     if (contentEditableRef.current) {
       const text = contentEditableRef.current.innerText;
-      setTaskName(text);
-      setTaskNameHtml(text);
+      setTodoName(text);
+      setTodoNameHtml(text);
     }
   };
 
@@ -38,15 +43,46 @@ const CreateTodo: React.FC = () => {
     (dateText: string) => {
       const highlighted = `<span style="background-color: #ff706e; color: white;">${dateText}</span>`;
 
-      const highlightedText = taskName.replace(dateText, highlighted);
+      const highlightedText = todoName.replace(dateText, highlighted);
 
       return highlightedText;
     },
-    [taskName]
+    [todoName]
   );
 
+  const handleAddTodo = async () => {
+    setAddingTodo(true);
+    
+    const toastId = toast.loading("Adding todo...");
+
+    let newTitle = todoName;
+    const results = chrono.parse(todoName);
+    const result = results[0];
+
+    if (result) {
+      const timeResult = chrono.parse(todoName);
+      newTitle = todoName.replace(timeResult[0].text, "").trim();
+    }
+
+    try {
+      await addTodo({
+        title: newTitle,
+        description,
+        status,
+        dueDate: dueDate || undefined,
+      });
+      toast.success("Todo added successfully", { id: toastId });
+    } catch (error) {
+      toast.error("Failed to add todo", { id: toastId });
+    }
+
+    setAddingTodo(false);
+    setTodoName("");
+    setTodoNameHtml("");
+  };
+
   useEffect(() => {
-    const results = chrono.parse(taskName);
+    const results = chrono.parse(todoName);
     const result = results[0];
 
     if (result) {
@@ -71,9 +107,9 @@ const CreateTodo: React.FC = () => {
       }
 
       setDueDate(date);
-      setTaskNameHtml(highlightDates(text));
+      setTodoNameHtml(highlightDates(text));
     }
-  }, [taskName, highlightDates]);
+  }, [todoName, highlightDates]);
 
   return (
     <Container p="0.75rem" id="create-todo-container">
@@ -85,12 +121,12 @@ const CreateTodo: React.FC = () => {
           position: "relative",
         }}
       >
-        {!taskName && (
+        {!todoName && (
           <Text
             size="4"
             style={{ opacity: 0.55, position: "absolute", zIndex: -10 }}
           >
-            Task name
+            Todo name
           </Text>
         )}
         <Text
@@ -108,6 +144,13 @@ const CreateTodo: React.FC = () => {
           onInput={handleInput}
           suppressContentEditableWarning={true}
           ref={contentEditableRef}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              contentEditableRef.current?.blur();
+              handleAddTodo();
+            }
+          }}
           asChild
         >
           <p></p>
@@ -122,7 +165,7 @@ const CreateTodo: React.FC = () => {
             top: 0,
           }}
           size="4"
-          dangerouslySetInnerHTML={{ __html: taskNameHtml }}
+          dangerouslySetInnerHTML={{ __html: todoNameHtml }}
           asChild
         >
           <p></p>
@@ -188,8 +231,8 @@ const CreateTodo: React.FC = () => {
           </Select.Root>
         </Flex>
         <Flex>
-          <Button color="red">
-            Add Todo
+          <Button color="red" className="w-24 md:w-32" onClick={handleAddTodo}>
+            {addingTodo ? <Spinner /> : "Add Todo"}
           </Button>
         </Flex>
       </Flex>

@@ -100,7 +100,7 @@
   border-radius: 4px;
 }
 
-.task {
+.todo {
   padding: 0.5rem 0;
   border-bottom: 1px solid #e1e1e1;
 
@@ -109,7 +109,7 @@
   position: relative;
 }
 
-.task-drag-handler {
+.todo-drag-handler {
   opacity: 0;
   position: absolute;
   left: -1.5rem;
@@ -118,7 +118,7 @@
   transition: opacity 0.2s;
 }
 
-.task:hover .task-drag-handler {
+.todo:hover .todo-drag-handler {
   opacity: 1;
 }
 

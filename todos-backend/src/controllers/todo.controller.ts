@@ -14,7 +14,7 @@ export const createTodo = async (req: Request, res: Response) => {
   const todo = await TodoController.createTodo(req.session.userId!, {
     title,
     description,
-    dueDate,
+    dueDate: dueDate ? new Date(dueDate) : null,
     status,
   });
   return res.status(201).json(todo);
@@ -27,7 +27,7 @@ export const updateTodo = async (req: Request, res: Response) => {
   const todo = await TodoController.updateTodo(id, {
     title,
     description,
-    dueDate,
+    dueDate: dueDate ? new Date(dueDate) : null,
     status,
   });
   return res.status(200).json(todo);

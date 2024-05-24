@@ -5,7 +5,7 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Theme } from "@radix-ui/themes";
-import { TasksProvider } from "./store/TaskContext";
+import { TodoProvider } from "./store/TodoContext";
 import { AuthProvider } from "./store/AuthContext";
 import { Toaster } from "react-hot-toast";
 
@@ -16,10 +16,10 @@ root.render(
   <React.StrictMode>
     <Theme>
       <AuthProvider>
-        <TasksProvider>
+        <TodoProvider>
           <Toaster />
           <App />
-        </TasksProvider>
+        </TodoProvider>
       </AuthProvider>
     </Theme>
   </React.StrictMode>
