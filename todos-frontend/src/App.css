@@ -1,0 +1,131 @@
+#create-todo-container {
+  border: 1px solid #9e9e9e;
+  border-radius: 6px;
+}
+
+#create-todo-container input {
+  display: block;
+  width: 100%;
+  border: none;
+}
+
+.caret {
+  position: absolute;
+  width: 2px;
+  height: 1em;
+  background-color: red; /* Change this to the desired cursor color */
+  animation: blink 1s step-start infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.pointer {
+  cursor: pointer;
+
+}
+
+/* DatePicker.css */
+.trigger-button {
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+}
+
+.popover-content {
+  padding: 16px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.day-of-week {
+  text-align: center;
+  font-weight: bold;
+}
+
+.day, .empty-day {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.day.selected {
+  background-color: #007bff;
+  color: white;
+  border-radius: 50%;
+}
+
+.empty-day {
+  pointer-events: none;
+}
+
+.time-picker {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.time-input {
+  width: 50px;
+  padding: 4px;
+  margin: 0 4px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.task {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e1e1e1;
+
+  background-color: #fff;
+  cursor: pointer;
+  position: relative;
+}
+
+.task-drag-handler {
+  opacity: 0;
+  position: absolute;
+  left: -1.5rem;
+  top: 0.75rem;
+  z-index: 100;
+  transition: opacity 0.2s;
+}
+
+.task:hover .task-drag-handler {
+  opacity: 1;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
+}
